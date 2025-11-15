@@ -1,0 +1,60 @@
+form {
+  display: grid;
+  gap: var(--gap);
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ef;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+  outline: none;
+  transition: box-shadow 0.12s, border-color 0.12s, transform 0.08s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
+  border-color: var(--accent-600);
+}
+
+button[type="submit"] {
+  background: linear-gradient(90deg, var(--accent), var(--accent-600));
+  color: white;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.12s;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.14);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+#msg {
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
+
+.success {
+  color: var(--success);
+}
+
+.error {
+  color: var(--danger);
+}
