@@ -10,9 +10,12 @@
   <body>
     <div class="container">
       <main class="card" role="main">
+        <figure class="card-media" aria-hidden="false">
+          <img src="./assets/images/Foto Minoru.png" alt="Minoru Yamanouchi sorrindo" loading="eager" />
+        </figure>
         <header>
           <h1>Confirmação de Presença</h1>
-          <p>Aniversário do <strong>Minoru Yamanouchi</strong>, dia <strong>[data]</strong> em <strong>[local]</strong>.</p>
+          <p>Aniversário do <strong>Minoru Yamanouchi</strong>, Data: <strong>16.05.2026 17h às 22h</strong> em <strong>Espaço La Feria</strong>.</p>
         </header>
 
         <form id="rsvp-form" novalidate>
@@ -50,7 +53,6 @@
             <select id="presenca" name="presenca" required aria-required="true">
               <option value="" selected disabled>Selecione</option>
               <option value="Sim">Sim</option>
-              <option value="Talvez">Talvez</option>
               <option value="Nao">Não</option>
             </select>
           </fieldset>
@@ -69,10 +71,10 @@
             </div>
 
             <div>
-              <label for="observacoes">Observações</label>
+              <label for="nomesAcompanhante">Nome dos acompanhantes</label>
               <textarea
-                id="observacoes"
-                name="observacoes"
+                id="nomesAcompanhante"
+                name="nomesAcompanhante"
                 rows="3"
                 placeholder="Restrições alimentares, crianças, horário previsto..."
               ></textarea>

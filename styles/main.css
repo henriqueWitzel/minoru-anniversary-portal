@@ -187,3 +187,29 @@ button[type="submit"]:active {
     transition: none !important;
   }
 }
+
+/* Card banner / header image */
+.card-media {
+  margin: -20px -20px -30px; /* negate card padding so banner reaches card edges */
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  overflow: hidden;
+}
+.card-media img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+@media (min-width: 640px) {
+  .card-media img {
+    height: 220px;
+  }
+}
+
+/* Tighten header spacing after the banner */
+.card > header {
+  margin-top: 0;
+  padding-top: 0;
+}
