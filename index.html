@@ -4,25 +4,39 @@
     <meta charset="UTF-8" />
     <title>Confirmação de Presença - Aniversário</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Confirme sua presença no aniversário — formulário simples, acessível e responsivo." />
+    <meta
+      name="description"
+      content="Confirme sua presença no aniversário — formulário simples, acessível e responsivo."
+    />
     <link rel="stylesheet" href="./styles/main.css" />
   </head>
   <body>
     <div class="container">
       <main class="card" role="main">
         <figure class="card-media" aria-hidden="false">
-          <img src="./assets/images/Foto Minoru.png" alt="Minoru Yamanouchi sorrindo" loading="eager" />
+          <img
+            src="./assets/images/Foto Minoru.png"
+            alt="Minoru Yamanouchi sorrindo"
+            loading="eager"
+          />
         </figure>
         <header>
           <h1>Confirmação de Presença</h1>
-          <p>Aniversário do <strong>Minoru Yamanouchi</strong></p>
-          <p><strong>16.05.2026 - 17h às 22h</strong> em <strong>Espaço La Feria</strong>.</p>
+          <p>
+            Aniversário do <strong>Minoru Yamanouchi</strong>
+          </p>
+          <p>
+            <strong>16.05.2026 - 17h às 22h</strong> em
+            <strong>Espaço La Feria</strong>.
+          </p>
         </header>
 
         <form id="rsvp-form" novalidate>
           <div class="grid grid-2">
             <div>
-              <label for="nome">Nome completo <span aria-hidden="true">*</span></label>
+              <label for="nome"
+                >Nome completo <span aria-hidden="true">*</span></label
+              >
               <input
                 id="nome"
                 name="nome"
@@ -34,7 +48,10 @@
             </div>
 
             <div>
-              <label for="contato">Contato (WhatsApp ou e‑mail) <span aria-hidden="true">*</span></label>
+              <label for="contato"
+                >Contato (WhatsApp ou e-mail)
+                <span aria-hidden="true">*</span></label
+              >
               <input
                 id="contato"
                 name="contato"
@@ -44,12 +61,17 @@
                 autocomplete="email"
                 placeholder="(XX) 9XXXX-XXXX ou seu@email.com"
               />
-              <div id="contato-help" class="helper">Usaremos apenas para confirmar a presença.</div>
+              <div id="contato-help" class="helper">
+                Usaremos apenas para confirmar a presença.
+              </div>
             </div>
           </div>
 
           <fieldset>
-            <legend style="font-weight: 700; margin-bottom: 6px">Podemos confirmar a sua presença ? <span aria-hidden="true">*</span></legend>
+            <legend style="font-weight: 700; margin-bottom: 6px">
+              Podemos confirmar a sua presença ?
+              <span aria-hidden="true">*</span>
+            </legend>
             <label for="presenca" class="sr-only">Selecione presença</label>
             <select id="presenca" name="presenca" required aria-required="true">
               <option value="" selected disabled>Selecione</option>
@@ -86,7 +108,13 @@
             <button type="submit">Enviar</button>
           </div>
 
-          <div id="msg" role="status" aria-live="polite" tabindex="-1" aria-atomic="true"></div>
+          <div
+            id="msg"
+            role="status"
+            aria-live="polite"
+            tabindex="-1"
+            aria-atomic="true"
+          ></div>
         </form>
       </main>
     </div>
