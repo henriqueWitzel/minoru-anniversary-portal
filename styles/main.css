@@ -86,7 +86,7 @@ header h1 {
 }
 
 header p {
-  margin: 0 0 14px 0;
+  margin: 0 0 2px 0;
   color: var(--muted);
   font-size: 0.95rem;
 }
@@ -125,6 +125,12 @@ textarea {
   color: inherit;
   outline: none;
   transition: box-shadow 0.12s, border-color 0.12s, transform 0.08s;
+}
+
+textarea {
+  resize: vertical;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 input:focus,
