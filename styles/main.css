@@ -4,8 +4,8 @@
 :root {
   --bg: #f6f7fb;
   --card: #ffffff;
-  --accent: #7c3aed;
-  --accent-600: #6b21a8;
+  --accent: #27528aff;
+  --accent-600: #312eccff;
   --muted: #6b7280;
   --radius: 12px;
   --gap: 12px;
@@ -86,7 +86,7 @@ header h1 {
 }
 
 header p {
-  margin: 0 0 14px 0;
+  margin: 0 0 2px 0;
   color: var(--muted);
   font-size: 0.95rem;
 }
@@ -125,6 +125,12 @@ textarea {
   color: inherit;
   outline: none;
   transition: box-shadow 0.12s, border-color 0.12s, transform 0.08s;
+}
+
+textarea {
+  resize: vertical;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 input:focus,
@@ -190,25 +196,29 @@ button[type="submit"]:active {
 
 /* Card banner / header image */
 .card-media {
-  margin: -20px -20px -30px; /* negate card padding so banner reaches card edges */
+  margin: 12px -20px -30px;
   border-top-left-radius: var(--radius);
   border-top-right-radius: var(--radius);
   overflow: hidden;
 }
 .card-media img {
   width: 100%;
-  height: 160px;
+  height: auto;
+  max-height: 180px;
   object-fit: cover;
   display: block;
+  margin-top: 0;
 }
 
 @media (min-width: 640px) {
+  .card-media {
+    margin-top: 0;
+  }
   .card-media img {
-    height: 220px;
+    max-height: 220px;
   }
 }
 
-/* Tighten header spacing after the banner */
 .card > header {
   margin-top: 0;
   padding-top: 0;

@@ -65,8 +65,8 @@ Edite `styles/main.css`. As variáveis CSS estão no topo do arquivo:
 
 ```css
 :root {
-  --accent: #7c3aed;        /* Cor principal */
-  --accent-600: #6b21a8;    /* Cor secundária */
+  --accent: #27528aff;        /* Cor principal */
+  --accent-600: #312eccff;    /* Cor secundária */
   --max-width: 720px;       /* Largura máxima do container */
   /* ... outras variáveis */
 }
