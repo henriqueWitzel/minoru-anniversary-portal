@@ -4,7 +4,7 @@
  */
 
 const CONFIG = {
-  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxPpjtHik6zKSXgZAM04BHEbPLXRPQMUnFVm9zJlV9uY010-TGceM-d7vuaenho4vDq/exec'
+  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxWQbgPg6yld0pmcZ_J6WKLFxsvYytxviAYD4PO3Qpl9JsK9C6HaMmGKs4M9um-PMok/exec'
 };
 
 let form;
@@ -45,7 +45,7 @@ function collectFormData() {
     contato: document.getElementById('contato').value,
     presenca: document.getElementById('presenca').value,
     acompanhantes: document.getElementById('acompanhantes').value,
-    observacoes: document.getElementById('observacoes').value
+    nomesAcompanhante: document.getElementById('nomesAcompanhante').value
   };
 }
 

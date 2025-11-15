@@ -1,16 +1,17 @@
 {
   "name": "minoru-anniversary-portal",
   "version": "1.0.0",
-  "description": "Lista de presença para aniversário do Minoru",
-  "main": "src/index.html",
+  "description": "Portal de confirmação de presença do Minoru",
+  "main": "index.html",
   "scripts": {
-    "dev": "npx http-server src -c-1 -o"
+    "dev": "npx http-server . -c-1 -o",
+    "start": "npx http-server . -c-1 -o"
   },
   "keywords": [
     "rsvp",
     "anniversary",
     "form"
   ],
-  "author": "",
+  "author": "Henrique Witzel",
   "license": "MIT"
 }
