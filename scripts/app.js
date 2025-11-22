@@ -11,6 +11,10 @@ const CONFIG = {
 let form;
 let msg;
 let submitBtn;
+let acompanhantesInput;
+let nomesTextarea;
+let nomesHelp;
+let toastTimeoutId;
 
 /**
  * Inicializa os elementos do DOM
@@ -19,13 +23,15 @@ function initDOMElements() {
   form = document.getElementById('rsvp-form');
   msg = document.getElementById('msg');
   submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  acompanhantesInput = document.getElementById('acompanhantes');
+  nomesTextarea = document.getElementById('nomesAcompanhante');
+  nomesHelp = document.getElementById('nomesAcompanhante-help');
 
   if (!form || !msg || !submitBtn) {
     console.error('Elementos do formulário não encontrados');
     return false;
   }
 
-  // Guarda o texto original do botão para reuso
   if (submitBtn && !submitBtn.dataset.label) {
     submitBtn.dataset.label = submitBtn.textContent.trim();
   }
@@ -34,14 +40,53 @@ function initDOMElements() {
 }
 
 /**
- * Exibe uma mensagem para o usuário
+ * Esconde o toast, se existir
+ */
+function hideToast() {
+  if (!msg) return;
+  const toast = msg.querySelector('.msg-toast');
+  if (!toast) return;
+
+  toast.classList.remove('visible');
+  setTimeout(() => {
+    if (toast.parentElement === msg) {
+      msg.innerHTML = '';
+    }
+  }, 200);
+}
+
+/**
+ * Exibe uma mensagem para o usuário em formato de popup (toast)
  * @param {string} text - Texto da mensagem
  * @param {string} type - Tipo da mensagem ('success', 'error', '')
  */
 function showMessage(text, type = '') {
-  msg.textContent = text;
-  msg.className = type;
-  msg.focus({ preventScroll: true });
+  if (!msg || !text) return;
+
+  // cancela timeout anterior, se houver
+  if (toastTimeoutId) {
+    clearTimeout(toastTimeoutId);
+  }
+
+  // limpa qualquer toast anterior
+  msg.innerHTML = '';
+
+  const toast = document.createElement('div');
+  toast.className = type ? `msg-toast ${type}` : 'msg-toast';
+  toast.textContent = text;
+
+  // permite fechar clicando
+  toast.addEventListener('click', hideToast);
+
+  msg.appendChild(toast);
+
+  // ativa animação
+  requestAnimationFrame(() => {
+    toast.classList.add('visible');
+  });
+
+  const duration = type === 'error' ? 6000 : 4000;
+  toastTimeoutId = setTimeout(hideToast, duration);
 }
 
 /**
@@ -50,10 +95,6 @@ function showMessage(text, type = '') {
  * e mostra/oculta a mensagem de ajuda
  */
 function updateAcompanhantesRequirement() {
-  const acompanhantesInput = document.getElementById('acompanhantes');
-  const nomesTextarea = document.getElementById('nomesAcompanhante');
-  const help = document.getElementById('nomesAcompanhante-help');
-
   if (!acompanhantesInput || !nomesTextarea) return;
 
   const qtd = parseInt(acompanhantesInput.value, 10) || 0;
@@ -61,21 +102,21 @@ function updateAcompanhantesRequirement() {
   if (qtd > 0) {
     nomesTextarea.required = true;
     nomesTextarea.setAttribute('aria-required', 'true');
-    nomesTextarea.setAttribute('aria-describedby', 'nomesAcompanhante-help');
 
-    if (help) {
-      help.textContent =
+    if (nomesHelp) {
+      nomesTextarea.setAttribute('aria-describedby', 'nomesAcompanhante-help');
+      nomesHelp.textContent =
         'Obrigatório informar os nomes dos acompanhantes quando houver acompanhantes.';
-      help.classList.add('visible');
+      nomesHelp.classList.add('visible');
     }
   } else {
     nomesTextarea.required = false;
     nomesTextarea.removeAttribute('aria-required');
-    nomesTextarea.removeAttribute('aria-describedby');
 
-    if (help) {
-      help.textContent = '';
-      help.classList.remove('visible');
+    if (nomesHelp) {
+      nomesTextarea.removeAttribute('aria-describedby');
+      nomesHelp.textContent = '';
+      nomesHelp.classList.remove('visible');
     }
   }
 }
@@ -99,7 +140,6 @@ function collectFormData() {
  */
 function resetForm() {
   form.reset();
-  // Recalcula a obrigatoriedade dos acompanhantes após reset
   updateAcompanhantesRequirement();
   document.getElementById('nome').focus();
 }
@@ -129,12 +169,14 @@ async function submitFormData(data) {
 async function handleFormSubmit(event) {
   event.preventDefault();
 
-  if (submitBtn && submitBtn.disabled) {
-    // Já está enviando, evita duplo clique / Enter repetido
+  if (!form || !submitBtn) return;
+
+  // se já estiver enviando, evita duplo clique / Enter repetido
+  if (submitBtn.disabled) {
     return;
   }
 
-  // Garante que a regra de obrigatoriedade esteja atualizada
+  // garante que a regra de obrigatoriedade esteja atualizada
   updateAcompanhantesRequirement();
 
   // Validação nativa
@@ -143,16 +185,13 @@ async function handleFormSubmit(event) {
     return;
   }
 
-  if (submitBtn) {
-    const defaultLabel = submitBtn.dataset.label || submitBtn.textContent;
-    submitBtn.dataset.label = defaultLabel;
+  const defaultLabel = submitBtn.dataset.label || submitBtn.textContent.trim();
+  submitBtn.dataset.label = defaultLabel;
 
-    submitBtn.disabled = true;
-    submitBtn.setAttribute('aria-busy', 'true');
-    submitBtn.textContent = 'Enviando...';
-  }
-
-  showMessage('Enviando...', '');
+  // trava o botão e mostra estado de carregando
+  submitBtn.disabled = true;
+  submitBtn.setAttribute('aria-busy', 'true');
+  submitBtn.textContent = 'Enviando...';
 
   try {
     const data = collectFormData();
@@ -161,11 +200,9 @@ async function handleFormSubmit(event) {
     showMessage('Resposta registrada, obrigado!', 'success');
     resetForm();
 
-    if (submitBtn) {
-      submitBtn.removeAttribute('aria-busy');
-      submitBtn.textContent = 'Enviado ✔';
-      // Mantém desabilitado para não duplicar submissão
-    }
+    // mantém desabilitado para não duplicar submissão
+    submitBtn.removeAttribute('aria-busy');
+    submitBtn.textContent = 'Enviado ✔';
   } catch (error) {
     console.error('Erro ao enviar formulário:', error);
     showMessage(
@@ -173,11 +210,9 @@ async function handleFormSubmit(event) {
       'error'
     );
 
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.removeAttribute('aria-busy');
-      submitBtn.textContent = submitBtn.dataset.label || 'Enviar';
-    }
+    submitBtn.disabled = false;
+    submitBtn.removeAttribute('aria-busy');
+    submitBtn.textContent = defaultLabel;
   }
 }
 
@@ -187,8 +222,6 @@ async function handleFormSubmit(event) {
 function init() {
   if (!initDOMElements()) return;
 
-  // Liga a validação dinâmica de acompanhantes
-  const acompanhantesInput = document.getElementById('acompanhantes');
   if (acompanhantesInput) {
     acompanhantesInput.addEventListener(
       'input',
@@ -198,7 +231,6 @@ function init() {
       'change',
       updateAcompanhantesRequirement
     );
-    // Estado inicial
     updateAcompanhantesRequirement();
   }
 
