@@ -45,6 +45,27 @@ function showMessage(text, type = '') {
 }
 
 /**
+ * Deixa o campo "nomesAcompanhante" obrigatório
+ * quando o número de acompanhantes for maior que 0
+ */
+function updateAcompanhantesRequirement() {
+  const acompanhantesInput = document.getElementById('acompanhantes');
+  const nomesTextarea = document.getElementById('nomesAcompanhante');
+
+  if (!acompanhantesInput || !nomesTextarea) return;
+
+  const qtd = parseInt(acompanhantesInput.value, 10) || 0;
+
+  if (qtd > 0) {
+    nomesTextarea.required = true;
+    nomesTextarea.setAttribute('aria-required', 'true');
+  } else {
+    nomesTextarea.required = false;
+    nomesTextarea.removeAttribute('aria-required');
+  }
+}
+
+/**
  * Coleta os dados do formulário
  * @returns {Object} Dados do formulário
  */
@@ -63,6 +84,8 @@ function collectFormData() {
  */
 function resetForm() {
   form.reset();
+  // Recalcula a obrigatoriedade dos acompanhantes após reset
+  updateAcompanhantesRequirement();
   document.getElementById('nome').focus();
 }
 
@@ -95,6 +118,9 @@ async function handleFormSubmit(event) {
     // Já está enviando, evita duplo clique / Enter repetido
     return;
   }
+
+  // Garante que a regra de obrigatoriedade esteja atualizada
+  updateAcompanhantesRequirement();
 
   // Validação nativa
   if (!form.checkValidity()) {
@@ -145,6 +171,21 @@ async function handleFormSubmit(event) {
  */
 function init() {
   if (!initDOMElements()) return;
+
+  // Liga a validação dinâmica de acompanhantes
+  const acompanhantesInput = document.getElementById('acompanhantes');
+  if (acompanhantesInput) {
+    acompanhantesInput.addEventListener(
+      'input',
+      updateAcompanhantesRequirement
+    );
+    acompanhantesInput.addEventListener(
+      'change',
+      updateAcompanhantesRequirement
+    );
+    // Estado inicial
+    updateAcompanhantesRequirement();
+  }
 
   form.addEventListener('submit', handleFormSubmit);
   console.log('Formulário inicializado com sucesso');
