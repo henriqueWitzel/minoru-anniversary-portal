@@ -197,7 +197,7 @@ async function handleFormSubmit(event) {
     const data = collectFormData();
     await submitFormData(data);
 
-    showMessage('Resposta registrada, obrigado!', 'success');
+    showMessage('Sua presença foi confirmada. Obrigado!', 'success');
     resetForm();
 
     // mantém desabilitado para não duplicar submissão
