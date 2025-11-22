@@ -225,3 +225,20 @@ button[type='submit']:active {
   margin-bottom: 8px;
   padding-top: 0;
 }
+
+/* Estado desabilitado / carregando do botão de envio */
+button[type='submit'][disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+button[type='submit'][aria-busy='true'] {
+  position: relative;
+}
+
+button[type='submit'][aria-busy='true']::after {
+  content: '…'; /* reticências */
+  margin-left: 6px;
+}

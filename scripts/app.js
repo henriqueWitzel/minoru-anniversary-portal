@@ -4,11 +4,13 @@
  */
 
 const CONFIG = {
-  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxWQbgPg6yld0pmcZ_J6WKLFxsvYytxviAYD4PO3Qpl9JsK9C6HaMmGKs4M9um-PMok/exec'
+  SCRIPT_URL:
+    'https://script.google.com/macros/s/AKfycbxWQbgPg6yld0pmcZ_J6WKLFxsvYytxviAYD4PO3Qpl9JsK9C6HaMmGKs4M9um-PMok/exec'
 };
 
 let form;
 let msg;
+let submitBtn;
 
 /**
  * Inicializa os elementos do DOM
@@ -16,11 +18,18 @@ let msg;
 function initDOMElements() {
   form = document.getElementById('rsvp-form');
   msg = document.getElementById('msg');
+  submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
-  if (!form || !msg) {
+  if (!form || !msg || !submitBtn) {
     console.error('Elementos do formulário não encontrados');
     return false;
   }
+
+  // Guarda o texto original do botão para reuso
+  if (submitBtn && !submitBtn.dataset.label) {
+    submitBtn.dataset.label = submitBtn.textContent.trim();
+  }
+
   return true;
 }
 
@@ -82,10 +91,24 @@ async function submitFormData(data) {
 async function handleFormSubmit(event) {
   event.preventDefault();
 
+  if (submitBtn && submitBtn.disabled) {
+    // Já está enviando, evita duplo clique / Enter repetido
+    return;
+  }
+
   // Validação nativa
   if (!form.checkValidity()) {
     form.reportValidity();
     return;
+  }
+
+  if (submitBtn) {
+    const defaultLabel = submitBtn.dataset.label || submitBtn.textContent;
+    submitBtn.dataset.label = defaultLabel;
+
+    submitBtn.disabled = true;
+    submitBtn.setAttribute('aria-busy', 'true');
+    submitBtn.textContent = 'Enviando...';
   }
 
   showMessage('Enviando...', '');
@@ -96,9 +119,24 @@ async function handleFormSubmit(event) {
 
     showMessage('Resposta registrada, obrigado!', 'success');
     resetForm();
+
+    if (submitBtn) {
+      submitBtn.removeAttribute('aria-busy');
+      submitBtn.textContent = 'Enviado ✔';
+      // Mantém desabilitado para não duplicar submissão
+    }
   } catch (error) {
     console.error('Erro ao enviar formulário:', error);
-    showMessage('Não foi possível enviar. Tente novamente mais tarde.', 'error');
+    showMessage(
+      'Não foi possível enviar. Tente novamente mais tarde.',
+      'error'
+    );
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.removeAttribute('aria-busy');
+      submitBtn.textContent = submitBtn.dataset.label || 'Enviar';
+    }
   }
 }
 
@@ -107,7 +145,7 @@ async function handleFormSubmit(event) {
  */
 function init() {
   if (!initDOMElements()) return;
-  
+
   form.addEventListener('submit', handleFormSubmit);
   console.log('Formulário inicializado com sucesso');
 }
