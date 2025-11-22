@@ -47,10 +47,12 @@ function showMessage(text, type = '') {
 /**
  * Deixa o campo "nomesAcompanhante" obrigatório
  * quando o número de acompanhantes for maior que 0
+ * e mostra/oculta a mensagem de ajuda
  */
 function updateAcompanhantesRequirement() {
   const acompanhantesInput = document.getElementById('acompanhantes');
   const nomesTextarea = document.getElementById('nomesAcompanhante');
+  const help = document.getElementById('nomesAcompanhante-help');
 
   if (!acompanhantesInput || !nomesTextarea) return;
 
@@ -59,9 +61,22 @@ function updateAcompanhantesRequirement() {
   if (qtd > 0) {
     nomesTextarea.required = true;
     nomesTextarea.setAttribute('aria-required', 'true');
+    nomesTextarea.setAttribute('aria-describedby', 'nomesAcompanhante-help');
+
+    if (help) {
+      help.textContent =
+        'Obrigatório informar os nomes dos acompanhantes quando houver acompanhantes.';
+      help.classList.add('visible');
+    }
   } else {
     nomesTextarea.required = false;
     nomesTextarea.removeAttribute('aria-required');
+    nomesTextarea.removeAttribute('aria-describedby');
+
+    if (help) {
+      help.textContent = '';
+      help.classList.remove('visible');
+    }
   }
 }
 

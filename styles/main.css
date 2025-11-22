@@ -242,3 +242,15 @@ button[type='submit'][aria-busy='true']::after {
   content: '…'; /* reticências */
   margin-left: 6px;
 }
+
+/* Mensagem de ajuda para campos do formulário */
+.field-help {
+  display: none;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.field-help.visible {
+  display: block;
+}
